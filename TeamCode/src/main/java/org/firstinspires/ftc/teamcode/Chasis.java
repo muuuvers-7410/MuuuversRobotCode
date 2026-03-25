@@ -35,11 +35,9 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
-import java.util.concurrent.DelayQueue;
-import java.util.concurrent.Delayed;
-
 
 @TeleOp(name="Chasis")
 public class Chasis extends LinearOpMode {
@@ -58,14 +56,14 @@ public class Chasis extends LinearOpMode {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
-        leftDrive  = hardwareMap.get(DcMotor.class, "left_drive");
+        leftDrive = hardwareMap.get(DcMotor.class, "left_drive");
         rightDrive = hardwareMap.get(DcMotor.class, "right_drive");
         upDrive = hardwareMap.get(DcMotor.class, "Up_drive");
 
 
         leftDrive.setDirection(DcMotor.Direction.REVERSE);
         rightDrive.setDirection(DcMotor.Direction.FORWARD);
-        upDrive.setDirection(DcMotor.Direction.REVERSE);
+        upDrive.setDirection(DcMotor.Direction.FORWARD);
 
         waitForStart();
         runtime.reset();
@@ -82,21 +80,20 @@ public class Chasis extends LinearOpMode {
             leftDrive.setPower(leftPower);
             rightDrive.setPower(rightPower);
 
-//aqui deberia de encender el motor disparador pulsando la cruceta de arriba y apagarse pulsando la cruceta de abajo
-
             if (gamepad1.dpad_up) {
-                upDrive.setPower(upPower);
-            } else if (gamepad1.dpad_down) {
-                upDrive.setPower(0);
-
+                upPower = 1.0;
+            } else if (gamepad1.dpad_down){
+                upPower = 0.0;
             }
-        }
+            upDrive.setPower(upPower);
 
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
-            telemetry.addData("Motors",  "left (%1.0f), right (%1.0f) Up (%1.0f)", leftPower, rightPower, upPower);
+            telemetry.addData("Motors", "left (%1.0f), right (%1.0f) Up (%1.0f)", leftPower, rightPower, upPower);
             telemetry.addData("voltage", "leftDriveMotor(%1.0f), rightDriveMotor(%1.0f) UpDriveMotor(%1.0f  )", leftPower, rightPower, upPower);
+            telemetry.addLine("status inicializado");
+            telemetry.addData("Poder motor", upDrive.getPower());
             telemetry.update();
         }
     }
-
+}

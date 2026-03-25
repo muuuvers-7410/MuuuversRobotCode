@@ -32,20 +32,17 @@ package org.firstinspires.ftc.teamcode;
 //cambios
 //cambios2
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
+import java.util.concurrent.DelayQueue;
+import java.util.concurrent.Delayed;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
 
-
-@TeleOp(name="Mi Primer Programa")
-public class MiPrimerPrograma extends LinearOpMode {
+@TeleOp(name="Chasis")
+public class Chasis extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftDrive;
     private DcMotor upDrive;
@@ -63,7 +60,7 @@ public class MiPrimerPrograma extends LinearOpMode {
 
         leftDrive  = hardwareMap.get(DcMotor.class, "left_drive");
         rightDrive = hardwareMap.get(DcMotor.class, "right_drive");
-        upDrive = hardwareMap.get(DcMotor.class, "left_drive");
+        upDrive = hardwareMap.get(DcMotor.class, "Up_drive");
 
 
         leftDrive.setDirection(DcMotor.Direction.REVERSE);
@@ -77,23 +74,29 @@ public class MiPrimerPrograma extends LinearOpMode {
         while (opModeIsActive()) {
 
             double drive = -gamepad1.left_stick_y;
-            double turn  =  gamepad1.right_stick_x;
+            double turn = gamepad1.right_stick_x;
 
-            leftPower    = Range.clip(drive + turn, -1.0, 1.0) ;
-            rightPower   = Range.clip(drive - turn, -1.0, 1.0) ;
+            leftPower = Range.clip(drive + turn, -1.0, 1.0);
+            rightPower = Range.clip(drive - turn, -1.0, 1.0);
 
             leftDrive.setPower(leftPower);
             rightDrive.setPower(rightPower);
 
-            if(gamepad1.a){
+//aqui deberia de encender el motor disparador pulsando la cruceta de arriba y apagarse pulsando la cruceta de abajo
+
+            if (gamepad1.dpad_up) {
                 upDrive.setPower(upPower);
+            } else if (gamepad1.dpad_down) {
+                upDrive.setPower(0);
+
             }
+        }
 
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
-            telemetry.addData("Motors",  "left (%1.0f), right (%1.0f)", leftPower, rightPower);
-            telemetry.addData("voltage", "leftDriveMotor(%1.0f), rightDriveMotor(%1.0f)", leftPower, rightPower);
+            telemetry.addData("Motors",  "left (%1.0f), right (%1.0f) Up (%1.0f)", leftPower, rightPower, upPower);
+            telemetry.addData("voltage", "leftDriveMotor(%1.0f), rightDriveMotor(%1.0f) UpDriveMotor(%1.0f  )", leftPower, rightPower, upPower);
             telemetry.update();
         }
     }
-}
+

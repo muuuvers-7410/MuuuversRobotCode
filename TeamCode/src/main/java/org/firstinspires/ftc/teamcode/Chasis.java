@@ -35,6 +35,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
@@ -45,10 +46,14 @@ public class Chasis extends LinearOpMode {
     private DcMotor leftDrive;
     private DcMotor upDrive;
     private DcMotor rightDrive;
+    private DcMotor  RecogePelotas;
+
 
     double leftPower;
     double rightPower;
     double upPower;
+    double RecogePelotasPower;
+
 
     @Override
     public void runOpMode() {
@@ -59,11 +64,16 @@ public class Chasis extends LinearOpMode {
         leftDrive = hardwareMap.get(DcMotor.class, "left_drive");
         rightDrive = hardwareMap.get(DcMotor.class, "right_drive");
         upDrive = hardwareMap.get(DcMotor.class, "Up_drive");
+        RecogePelotas = hardwareMap.get(DcMotor.class, "RecogePelotas");
+
 
 
         leftDrive.setDirection(DcMotor.Direction.REVERSE);
         rightDrive.setDirection(DcMotor.Direction.FORWARD);
         upDrive.setDirection(DcMotor.Direction.FORWARD);
+        RecogePelotas.setDirection(DcMotor.Direction.FORWARD);
+
+
 
         waitForStart();
         runtime.reset();
@@ -85,14 +95,21 @@ public class Chasis extends LinearOpMode {
             } else if (gamepad1.dpad_down){
                 upPower = 0.0;
             }
+            if (gamepad1.a) {
+                RecogePelotasPower = 1.0;
+            } else if (gamepad1.b){
+                RecogePelotasPower = 0.0;
+            }
             upDrive.setPower(upPower);
+            RecogePelotas.setPower(RecogePelotasPower);
+
 
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
-            telemetry.addData("Motors", "left (%1.0f), right (%1.0f) Up (%1.0f)", leftPower, rightPower, upPower);
-            telemetry.addData("voltage", "leftDriveMotor(%1.0f), rightDriveMotor(%1.0f) UpDriveMotor(%1.0f  )", leftPower, rightPower, upPower);
+            telemetry.addData("Motors", "left (%1.0f), right (%1.0f), Up (%1.0f) ,RecogePelotas (%1.0f)", leftPower, rightPower, upPower, RecogePelotasPower);
+            telemetry.addData("voltage", "leftDriveMotor(%1.0f), rightDriveMotor(%1.0f), UpDriveMotor(%1.0f  ) ,RecogePelotasMotor(%1.0f)", leftDrive, leftPower, rightPower, upPower, RecogePelotasPower);
             telemetry.addLine("status inicializado");
-            telemetry.addData("Poder motor", upDrive.getPower());
+            telemetry.addData("Poder motor", "upDrive.getPower(), RecogePelotas.getPower()");
             telemetry.update();
         }
     }

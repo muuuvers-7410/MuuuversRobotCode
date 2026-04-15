@@ -46,13 +46,13 @@ public class Chasis extends LinearOpMode {
     private DcMotor leftDrive;
     private DcMotor upDrive;
     private DcMotor rightDrive;
-    private DcMotor  RecogePelotas;
+    private DcMotor  delmedio;
 
 
     double leftPower;
     double rightPower;
     double upPower;
-    double RecogePelotasPower;
+    double delmedioPower;
 
 
     @Override
@@ -64,16 +64,14 @@ public class Chasis extends LinearOpMode {
         leftDrive = hardwareMap.get(DcMotor.class, "left_drive");
         rightDrive = hardwareMap.get(DcMotor.class, "right_drive");
         upDrive = hardwareMap.get(DcMotor.class, "Up_drive");
-        RecogePelotas = hardwareMap.get(DcMotor.class, "RecogePelotas");
+       delmedio = hardwareMap.get(DcMotor.class, "delmedio");
 
 
 
         leftDrive.setDirection(DcMotor.Direction.REVERSE);
         rightDrive.setDirection(DcMotor.Direction.FORWARD);
         upDrive.setDirection(DcMotor.Direction.FORWARD);
-        RecogePelotas.setDirection(DcMotor.Direction.FORWARD);
-
-
+        delmedio.setDirection(DcMotor.Direction.FORWARD);
 
         waitForStart();
         runtime.reset();
@@ -96,20 +94,20 @@ public class Chasis extends LinearOpMode {
                 upPower = 0.0;
             }
             if (gamepad1.a) {
-                RecogePelotasPower = 1.0;
+                delmedioPower = 1.0;
             } else if (gamepad1.b){
-                RecogePelotasPower = 0.0;
+                delmedioPower = 0.0;
             }
             upDrive.setPower(upPower);
-            RecogePelotas.setPower(RecogePelotasPower);
+            delmedio.setPower(delmedioPower);
 
 
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
-            telemetry.addData("Motors", "left (%1.0f), right (%1.0f), Up (%1.0f) ,RecogePelotas (%1.0f)", leftPower, rightPower, upPower, RecogePelotasPower);
-            telemetry.addData("voltage", "leftDriveMotor(%1.0f), rightDriveMotor(%1.0f), UpDriveMotor(%1.0f  ) ,RecogePelotasMotor(%1.0f)", leftDrive, leftPower, rightPower, upPower, RecogePelotasPower);
+            telemetry.addData("Motors", "left (%1.0f), right (%1.0f), Up (%1.0f) ,delmedio (%1.0f)", leftPower, rightPower, upPower, delmedioPower);
+            telemetry.addData("voltage", "leftDriveMotor(%1.0f), rightDriveMotor(%1.0f), UpDriveMotor(%1.0f  ) ,RecogePelotasMotor(%1.0f)", leftDrive, leftPower, rightPower, upPower, delmedioPower);
             telemetry.addLine("status inicializado");
-            telemetry.addData("Poder motor", "upDrive.getPower(), RecogePelotas.getPower()");
+            telemetry.addData("Poder motor", "upDrive.getPower(), delmedio.getPower()");
             telemetry.update();
         }
     }

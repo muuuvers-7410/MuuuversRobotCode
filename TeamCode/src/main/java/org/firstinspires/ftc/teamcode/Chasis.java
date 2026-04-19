@@ -4,8 +4,10 @@ package org.firstinspires.ftc.teamcode;
 
 //cambios
 //cambios2
-//Librerias
+//Libreria
 
+import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -49,6 +51,8 @@ public class Chasis extends LinearOpMode {
 
         waitForStart();
         runtime.reset();
+
+        //While es un ciclo que se repite infinita veces hasta que se desactive el OpMode desde el Diver Hub
 
 
         while (opModeIsActive()) {

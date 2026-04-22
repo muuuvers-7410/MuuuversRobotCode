@@ -70,16 +70,16 @@ public class Chasis extends LinearOpMode {
             if (gamepad1.a) {
                 RecojePelotasPower = 1.0;}
 
-             else if (gamepad1.b) {
+            else if (gamepad1.b) {
                 RecojePelotasPower = 0.0;}
 
             //Si se presiona el "R1" se encendera el disparador, y si se presiona "R2" se apagara
 
-                if (gamepad1.right_bumper) {
-                    DisparadorPower = 1.0;}
+            if (gamepad1.right_bumper) {
+                DisparadorPower = 1.0;}
 
-                 else if (gamepad1.left_bumper){
-                    DisparadorPower = 0.0;}
+            else if (gamepad1.left_bumper){
+                DisparadorPower = 0.0;}
 
             Disparador.setPower(DisparadorPower);
             RecojePelotas.setPower(RecojePelotasPower);

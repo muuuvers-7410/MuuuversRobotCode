@@ -4,31 +4,28 @@ package org.firstinspires.ftc.teamcode;
 
 //cambios
 //cambios2
-//Librerias
+//Libreria
+
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
-import java.util.concurrent.DelayQueue;
-import java.util.concurrent.Delayed;
-
 
 @TeleOp(name="Chasis")
 public class Chasis extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
-    private DcMotor leftDrive; //Este sera conectado en el PIN 0 del Control Hub
-    private DcMotor upDrive; //Este sera conectado en el PIN 2 del Control Hub
-    private DcMotor rightDrive; //Este sera conectado en el PIN 1 del Control Hub
-    private DcMotor delmedio; //Este sera conectado en el PIN 3 del Control Hub
+    private DcMotor leftDrive; //Este va conectado al PIN 0
+    private DcMotor rightDrive; //Este va conectado al PIN 1
+    private DcMotor Disparador; //Este va conectado al PIN 2
+    private DcMotor RecojePelotas; //Este va conectado al PIN 3
 
-//Valor que tendran los motores
 
     double leftPower;
     double rightPower;
-    double upPower;
-    double delmedioPower;
+    double DisparadorPower;
+    double RecojePelotasPower;
+
 
     @Override
     public void runOpMode() {
@@ -36,60 +33,65 @@ public class Chasis extends LinearOpMode {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
-        //Como los motores tendran que ser escritos en el Driver Hub
-
-        leftDrive  = hardwareMap.get(DcMotor.class, "left_drive");
+        leftDrive = hardwareMap.get(DcMotor.class, "left_drive");
         rightDrive = hardwareMap.get(DcMotor.class, "right_drive");
-        upDrive = hardwareMap.get(DcMotor.class, "Up_drive");
-        delmedio = hardwareMap.get(DcMotor.class, "del_medio");
+        Disparador = hardwareMap.get(DcMotor.class, "Up_drive");
+        RecojePelotas = hardwareMap.get(DcMotor.class, "del_medio");
 
-//Esta sera la dirreccion a la que girara el motor
+
 
         leftDrive.setDirection(DcMotor.Direction.REVERSE);
         rightDrive.setDirection(DcMotor.Direction.FORWARD);
-        upDrive.setDirection(DcMotor.Direction.FORWARD);
-        delmedio.setDirection(DcMotor.Direction.FORWARD);
+        Disparador.setDirection(DcMotor.Direction.FORWARD);
+        RecojePelotas.setDirection(DcMotor.Direction.FORWARD);
 
         waitForStart();
         runtime.reset();
 
+        //While es un ciclo que se repite infinita veces hasta que se desactive el OpMode desde el Diver Hub
+
 
         while (opModeIsActive()) {
 
-            double drive = gamepad1.left_stick_y;
+            double drive = -gamepad1.left_stick_y;
             double turn = gamepad1.right_stick_x;
 
-//Los motores se controlan los joystick izquierdo y derecho; respectivamente
+            //Los motores de conduccion se controlaran con los joysticks derecho e izquierdo respectivamene
 
             leftPower = Range.clip(drive + turn, -1.0, 1.0);
             rightPower = Range.clip(drive - turn, -1.0, 1.0);
 
+
             leftDrive.setPower(leftPower);
             rightDrive.setPower(rightPower);
 
-//Si presionas a se encendera el Recoje Pelotas, y si despues de eso presionas b se apagara
-            if (gamepad1.a) {
-                delmedioPower = 1.0;
-            }  else if (gamepad1.b){
-                delmedioPower = 0.0;
-            }
-//Si presionas la cruceta de arriba se encedera el Disparador, y si despues presionas la cruceta de bajo se apagara
-                if (gamepad1.dpad_up) {
-                    upPower = 1.0;
-                }  else if (gamepad1.dpad_down){
-                    upPower = 0.0;
-            }
-                upDrive.setPower(upPower);
-                delmedio.setPower(delmedioPower);
+            //Si se persiona "a" se encendera el Recoje Pelotas, y si se presiona "b" se apagara
 
-        }
+            if (gamepad1.a) {
+                RecojePelotasPower = 1.0;}
+
+            else if (gamepad1.b) {
+                RecojePelotasPower = 0.0;}
+
+            //Si se presiona el "R1" se encendera el disparador, y si se presiona "R2" se apagara
+
+            if (gamepad1.right_bumper) {
+                DisparadorPower = 1.0;}
+
+            else if (gamepad1.left_bumper){
+                DisparadorPower = 0.0;}
+
+            Disparador.setPower(DisparadorPower);
+            RecojePelotas.setPower(RecojePelotasPower);
+
 
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
-            telemetry.addData("Motors",  "left (%1.0f), right (%1.0f) Up (%1.0f), delmedio (%1.0)", leftPower, rightPower, upPower, delmedioPower);
-            telemetry.addData("voltage", "leftDriveMotor(1.0f), rightDriveMotor(%1.0f) UpDriveMotor(%1.0f) , delmedioMotor(%1.0f)", leftPower, rightPower, upPower, delmedioPower);
+            telemetry.addData("Motors", "left (%1.0f), right (%1.0f), Up (%1.0f) ,delmedio (%1.0f)", leftPower, rightPower, DisparadorPower, RecojePelotasPower);
+            telemetry.addData("voltage", "leftDriveMotor(%1.0f), rightDriveMotor(%1.0f), UpDriveMotor(%1.0f ), delmedioMotor(%1.0f)", leftDrive, leftPower, rightPower, DisparadorPower, RecojePelotasPower);
             telemetry.addLine("status inicializado");
-            telemetry.addData("Poder motor", "upDrive.getPower(), delmedio.getPower!()");
+            telemetry.addData("Poder motor", "upDrive.getPower(), delmedio.getPower()");
             telemetry.update();
         }
     }
+}

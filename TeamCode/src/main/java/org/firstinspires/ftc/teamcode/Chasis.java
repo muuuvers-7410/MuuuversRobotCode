@@ -87,13 +87,11 @@ public class Chasis extends LinearOpMode {
 
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
-            telemetry.addData("Motors", "left (%1.0f), right (%1.0f), Up (%1.0f) ,delmedio (%1.0f)", leftPower, rightPower, DisparadorPower, RecojePelotasPower);
-            telemetry.addData("voltage", "leftDriveMotor(%1.0f), rightDriveMotor(%1.0f), UpDriveMotor(%1.0f ), delmedioMotor(%1.0f)", leftDrive, leftPower, rightPower, DisparadorPower, RecojePelotasPower);
+            telemetry.addData("Motors", "left (%1.0f), right (%1.0f), Up (%.8f) ,delmedio (%1.0f)", leftPower, rightPower, DisparadorPower, RecojePelotasPower);
+            telemetry.addData("voltage", "leftDriveMotor(%1.0f), rightDriveMotor(%1.0f), UpDriveMotor(%.8f), delmedioMotor(%1.0f)", leftDrive, leftPower, rightPower, DisparadorPower, RecojePelotasPower);
             telemetry.addLine("status inicializado");
             telemetry.addData("Poder motor", "upDrive.getPower(), delmedio.getPower()");
             telemetry.update();
         }
     }
 }
-//Que vivan las chivas y que chingue a su madre el tigres
-//AQUINO VALE PARA PURA VERGA

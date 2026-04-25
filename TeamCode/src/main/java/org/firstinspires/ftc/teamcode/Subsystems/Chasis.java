@@ -1,6 +1,6 @@
 
 
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.Subsystems;
 
 //cambios
 //cambios2
@@ -11,6 +11,14 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.IMU;
+import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 
 @TeleOp(name="Chasis")
 public class Chasis extends LinearOpMode {
@@ -86,12 +94,12 @@ public class Chasis extends LinearOpMode {
 
 
             // Show the elapsed game time and wheel power.
-            telemetry.addData("Status", "Run Time: " + runtime.toString());
+            /*telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.addData("Motors", "left (%1.0f), right (%1.0f), Up (%.8f) ,delmedio (%1.0f)", leftPower, rightPower, DisparadorPower, RecojePelotasPower);
             telemetry.addData("voltage", "leftDriveMotor(%1.0f), rightDriveMotor(%1.0f), UpDriveMotor(%.8f), delmedioMotor(%1.0f)", leftDrive, leftPower, rightPower, DisparadorPower, RecojePelotasPower);
             telemetry.addLine("status inicializado");
             telemetry.addData("Poder motor", "upDrive.getPower(), delmedio.getPower()");
-            telemetry.update();
+            telemetry.update();*/
         }
     }
 }

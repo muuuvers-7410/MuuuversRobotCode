@@ -6,6 +6,7 @@ package org.firstinspires.ftc.teamcode.Subsystems;
 //cambios2
 //Libreria
 
+
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -16,90 +17,72 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
+public class Chasis extends SubsystemBase {
 
-@TeleOp(name="Chasis")
-public class Chasis extends LinearOpMode {
-    private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftDrive; //Este va conectado al PIN 0
     private DcMotor rightDrive; //Este va conectado al PIN 1
-    private DcMotor Disparador; //Este va conectado al PIN 2
-    private DcMotor RecojePelotas; //Este va conectado al PIN 3
 
+    private final double TICKS_PER_METER = 28.0;
+    private final double TRACK_WIDTH = 0.09;
+    private final double REDUCTION = 20.0;
 
-    double leftPower;
-    double rightPower;
-    double DisparadorPower;
-    double RecojePelotasPower;
+    private DifferentialDriveOdometry differentialDriveOdometry;
+    private IMU imu;
+    private double leftOffset = 0.0;
+    private double rightOffset = 0.0;
 
-
-    @Override
-    public void runOpMode() {
-
-        telemetry.addData("Status", "Initialized");
-        telemetry.update();
+    public Chasis(HardwareMap hardwareMap) {
 
         leftDrive = hardwareMap.get(DcMotor.class, "left_drive");
         rightDrive = hardwareMap.get(DcMotor.class, "right_drive");
-        Disparador = hardwareMap.get(DcMotor.class, "Up_drive");
-        RecojePelotas = hardwareMap.get(DcMotor.class, "del_medio");
+
+        leftDrive.setDirection(DcMotorEx.Direction.REVERSE);
+        rightDrive.setDirection(DcMotorEx.Direction.FORWARD);
 
 
 
-        leftDrive.setDirection(DcMotor.Direction.REVERSE);
-        rightDrive.setDirection(DcMotor.Direction.FORWARD);
-        Disparador.setDirection(DcMotor.Direction.FORWARD);
-        RecojePelotas.setDirection(DcMotor.Direction.FORWARD);
+        differentialDriveOdometry = new DifferentialDriveOdometry(new Rotation2d());
+        imu = hardwareMap.get(IMU.class, "imu");
+        IMU.Parameters imuParemeters = new IMU.Parameters(new
+                RevHubOrientationOnRobot(RevHubOrientationOnRobot.LogoFacingDirection.LEFT,
+                RevHubOrientationOnRobot.UsbFacingDirection.UP));
+        imu.initialize(imuParemeters);
+        imu.resetYaw();
+    }
 
-        waitForStart();
-        runtime.reset();
+    public void setVelocity(double linearVelocity, double angularVelocity) {
+        leftDrive.setPower(linearVelocity - angularVelocity);
+        rightDrive.setPower(linearVelocity + angularVelocity);
+    }
+    public double leftDistance() {
+        return ((leftDrive.getCurrentPosition() / TICKS_PER_METER) * TRACK_WIDTH * Math.PI) / REDUCTION;
+    }
 
-        //While es un ciclo que se repite infinita veces hasta que se desactive el OpMode desde el Diver Hub
-
-
-        while (opModeIsActive()) {
-
-            double drive = -gamepad1.left_stick_y;
-            double turn = gamepad1.right_stick_x;
-
-            //Los motores de conduccion se controlaran con los joysticks derecho e izquierdo respectivamene
-
-            leftPower = Range.clip(drive + turn, -1.0, 1.0);
-            rightPower = Range.clip(drive - turn, -1.0, 1.0);
-
-
-            leftDrive.setPower(leftPower);
-            rightDrive.setPower(rightPower);
-
-            //Si se persiona "a" se encendera el Recoje Pelotas, y si se presiona "b" se apagara
-
-            if (gamepad1.a) {
-                RecojePelotasPower = 1.0;}
-
-            else if (gamepad1.b) {
-                RecojePelotasPower = 0.0;}
-
-            //Si se presiona el "R1" se encendera el disparador, y si se presiona "R2" se apagara
-
-            if (gamepad1.right_bumper) {
-                DisparadorPower = 1.0;}
-
-            else if (gamepad1.left_bumper){
-                DisparadorPower = 0.0;}
-
-            Disparador.setPower(DisparadorPower);
-            RecojePelotas.setPower(RecojePelotasPower);
+    public double rightDistance() {
+        return ((rightDrive.getCurrentPosition() / TICKS_PER_METER) * TRACK_WIDTH * Math.PI) / REDUCTION;
+    }
 
 
-            // Show the elapsed game time and wheel power.
-            /*telemetry.addData("Status", "Run Time: " + runtime.toString());
-            telemetry.addData("Motors", "left (%1.0f), right (%1.0f), Up (%.8f) ,delmedio (%1.0f)", leftPower, rightPower, DisparadorPower, RecojePelotasPower);
-            telemetry.addData("voltage", "leftDriveMotor(%1.0f), rightDriveMotor(%1.0f), UpDriveMotor(%.8f), delmedioMotor(%1.0f)", leftDrive, leftPower, rightPower, DisparadorPower, RecojePelotasPower);
-            telemetry.addLine("status inicializado");
-            telemetry.addData("Poder motor", "upDrive.getPower(), delmedio.getPower()");
-            telemetry.update();*/
-        }
+    public void reset(Pose2d pose2d) {
+        leftOffset = leftDrive.getCurrentPosition();
+        rightOffset = rightDrive.getCurrentPosition();
+        differentialDriveOdometry.resetPosition(pose2d, getIMUHeading());
+    }
+
+    public Pose2d getPose() {
+        return differentialDriveOdometry.getPoseMeters();
+    }
+
+    @Override
+    public void periodic() {
+        differentialDriveOdometry.update(getIMUHeading(), leftDistance(), rightDistance());
+    }
+
+    private Rotation2d getIMUHeading() {
+        YawPitchRollAngles robotOrientation;
+        robotOrientation = imu.getRobotYawPitchRollAngles();
+        return Rotation2d.fromDegrees(robotOrientation.getYaw(AngleUnit.DEGREES));
     }
 }

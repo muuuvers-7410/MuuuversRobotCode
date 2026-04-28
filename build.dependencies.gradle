@@ -1,6 +1,19 @@
 repositories {
     google()
     mavenCentral()
+
+    maven {
+        url "https://frcmaven.wpi.edu/artifactory/release/"
+    }
+    maven{
+        url "https://overture-7421.github.io/overturelib/repo/"
+    }
+
+    maven {
+        url "https://maven.brott.dev/"
+    }
+
+
 }
 
 dependencies {
@@ -12,5 +25,21 @@ dependencies {
     implementation 'org.firstinspires.ftc:Hardware:11.1.0'
     implementation 'org.firstinspires.ftc:FtcCommon:11.1.0'
     implementation 'org.firstinspires.ftc:Vision:11.1.0'
-    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'androidx.appcompat:appcompat:1.7.1'
+
+    implementation 'com.overture.ftc:overftclib:2025.0.1'
+
+    implementation 'com.acmerobotics.dashboard:dashboard:0.4.16'
+}
+
+dependencies {
+    implementation 'org.firstinspires.ftc:Inspection:11.1.0'
+    implementation 'org.firstinspires.ftc:Blocks:11.1.0'
+    implementation 'org.firstinspires.ftc:RobotCore:11.1.0'
+    implementation 'org.firstinspires.ftc:RobotServer:11.1.0'
+    implementation 'org.firstinspires.ftc:OnBotJava:11.1.0'
+    implementation 'org.firstinspires.ftc:Hardware:11.1.0'
+    implementation 'org.firstinspires.ftc:FtcCommon:11.1.0'
+    implementation 'org.firstinspires.ftc:Vision:11.1.0'
+    implementation 'androidx.appcompat:appcompat:1.7.1'
 }

@@ -19,7 +19,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
-public class Chasis extends SubsystemBase {
+public class Chasis extends Subsystems {
 
     private DcMotor leftDrive; //Este va conectado al PIN 0
     private DcMotor rightDrive; //Este va conectado al PIN 1

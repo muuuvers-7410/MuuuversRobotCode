@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.Subsystems;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-public class RecojePelotas extends SubsystemBase {
+public class RecojePelotas extends Subsystems {
 
     private DcMotor RecojePelotas;
 

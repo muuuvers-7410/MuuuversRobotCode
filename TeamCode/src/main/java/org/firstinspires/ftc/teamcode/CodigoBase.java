@@ -19,6 +19,8 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 
 @TeleOp(name="CodigoBase")
 public class CodigoBase extends LinearOpMode {
+
+    //SUBSISTEMAS
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftDrive; //Este va conectado al PIN 0
     private DcMotor rightDrive; //Este va conectado al PIN 1
@@ -72,6 +74,7 @@ public class CodigoBase extends LinearOpMode {
             //Si se presiona el "R1" se encendera el disparador, y si se presiona "R2" se apagara
             if (gamepad1.right_bumper) {
                 DisparadorPower = 1.0;}
+
             else if (gamepad1.left_bumper){
                 DisparadorPower = 0.0;}
 

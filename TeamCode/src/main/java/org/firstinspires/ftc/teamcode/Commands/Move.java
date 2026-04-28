@@ -16,6 +16,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 import com.qualcomm.robotcore.hardware.Gamepad;
+
 import org.firstinspires.ftc.teamcode.Subsystems.Chasis;
 
 
@@ -27,18 +28,17 @@ public class Move extends CommandBase {
     double rightPower;
 
 
-    public Driver (Chasis chasis, Gamepad driverGamepad) {
+    public Move (Chasis chasis, Gamepad driverGamepad) {
         this.driverGamepad = driverGamepad;
     }
 
     @Override
-    public void execute(){
+    public void execute() {
 
         double drive = driverGamepad.right_stick_x;
         double turn = -driverGamepad.left_stick_y;
 
         leftPower = Range.clip(drive + turn, -1.0, 1.0);
         rightPower = Range.clip(drive - turn, -1.0, 1.0);
-
     }
 }

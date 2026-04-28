@@ -14,7 +14,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 import org.firstinspires.ftc.teamcode.Subsystems.Disparador;
 
-public class Disparador extends SubsystemBase {
+public class Disparador extends Subsystems {
 
     private DcMotor Disparador; //Este va conectado en el PIN 2
 

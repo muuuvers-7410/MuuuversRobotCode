@@ -83,7 +83,7 @@ public class CodigoBase extends LinearOpMode {
 
             // Show the elapsed game time and wheel power.
             /*telemetry.addData("Status", "Run Time: " + runtime.toString());
-            telemetry.addData("Motors", "left (%1.0f), right (%1.0f), Up (%.8f) ,delmedio (%1.0f)", leftPower, rightPower, DisparadorPower, RecojePelotasPower);
+            telemetry.addData("Motors", "left (%1.0f), right (%1.0f), Up (%1.0f) ,delmedio (%1.0f)", leftPower, rightPower, DisparadorPower, RecojePelotasPower);
             telemetry.addLine("status inicializado");
             telemetry.addData("Poder motor", "upDrive.getPower(), delmedio.getPower()");
             telemetry.update();*/

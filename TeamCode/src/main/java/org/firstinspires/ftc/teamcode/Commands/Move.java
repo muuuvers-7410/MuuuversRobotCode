@@ -35,7 +35,7 @@ public class Move extends CommandBase {
     @Override
     public void execute() {
 
-        double drive = driverGamepad.right_stick_x;
+        double drive = driverGamepad.left_stick_x;
         double turn = -driverGamepad.left_stick_y;
 
         leftPower = Range.clip(drive + turn, -1.0, 1.0);

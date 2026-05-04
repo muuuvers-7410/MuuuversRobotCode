@@ -8,15 +8,12 @@ public class AccionDisparador extends CommandBase {
 
     private final Gamepad Gamepad;
 
-    double DisparadorPower;
 
     public AccionDisparador(Disparador disparador, Gamepad DisparadorGamepad) {this.Gamepad = DisparadorGamepad;}
 
         @Override
         public void execute() {
 
-         double Disparador = Gamepad.right_bumper;
-
-         double Disparador = Gamepad = Gamepad.left_bumper;
+         boolean Disparador = Gamepad.right_bumper && Gamepad.left_bumper;
         }
     }

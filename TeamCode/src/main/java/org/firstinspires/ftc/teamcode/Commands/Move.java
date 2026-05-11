@@ -17,10 +17,11 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
+import org.firstinspires.ftc.teamcode.MainSystem;
 import org.firstinspires.ftc.teamcode.Subsystems.Chasis;
 
 
-public class Move extends CommandBase {
+public class Move extends MainSystem {
 
     private final Gamepad driverGamepad;
 
@@ -32,7 +33,6 @@ public class Move extends CommandBase {
         this.driverGamepad = driverGamepad;
     }
 
-    @Override
     public void execute() {
 
         double drive = driverGamepad.left_stick_x;

@@ -2,18 +2,22 @@ package org.firstinspires.ftc.teamcode.Commands;
 
 
 import com.qualcomm.robotcore.hardware.Gamepad;
-import org.firstinspires.ftc.teamcode.Subsystems.Disparador;
 
-public class AccionDisparador extends CommandBase {
+import org.firstinspires.ftc.teamcode.MainSystem;
+import org.firstinspires.ftc.teamcode.Subsystems.Disparador;
+import org.firstinspires.ftc.teamcode.Subsystems.RecojePelotas;
+
+public class AccionDisparador extends MainSystem {
 
     private final Gamepad Gamepad;
 
 
-    public AccionDisparador(Disparador disparador, Gamepad DisparadorGamepad) {this.Gamepad = DisparadorGamepad;}
+    public AccionDisparador(Disparador disparador, Gamepad gamepad) {
+        this.Gamepad = gamepad;
+    }
 
-        @Override
         public void execute() {
 
-         boolean Disparador = Gamepad.right_bumper && Gamepad.left_bumper;
+         boolean disparador = Gamepad.right_bumper && Gamepad.left_bumper;
         }
     }

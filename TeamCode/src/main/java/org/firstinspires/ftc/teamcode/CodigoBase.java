@@ -46,7 +46,7 @@ public class CodigoBase extends LinearOpMode {
         leftDrive.setDirection(DcMotor.Direction.REVERSE);
         rightDrive.setDirection(DcMotor.Direction.FORWARD);
         Disparador.setDirection(DcMotor.Direction.FORWARD);
-        RecojePelotas.setDirection(DcMotor.Direction.FORWARD);
+        RecojePelotas.setDirection(DcMotor.Direction.REVERSE);
 
         waitForStart();
         runtime.reset();
@@ -82,11 +82,12 @@ public class CodigoBase extends LinearOpMode {
             RecojePelotas.setPower(RecojePelotasPower);
 
             // Show the elapsed game time and wheel power.
-            /*telemetry.addData("Status", "Run Time: " + runtime.toString());
+
+            telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.addData("Motors", "left (%1.0f), right (%1.0f), Up (%1.0f) ,delmedio (%1.0f)", leftPower, rightPower, DisparadorPower, RecojePelotasPower);
             telemetry.addLine("status inicializado");
             telemetry.addData("Poder motor", "upDrive.getPower(), delmedio.getPower()");
-            telemetry.update();*/
+            telemetry.update();
         }
     }
 }

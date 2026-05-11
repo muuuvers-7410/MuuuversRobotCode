@@ -2,7 +2,10 @@ package org.firstinspires.ftc.teamcode;
 
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.gamepad1;
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.gamepad2;
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.linearOpMode;
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
+
+import com.qualcomm.robotcore.hardware.Gamepad;
 
 import android.widget.Button;
 
@@ -16,11 +19,8 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
-import com.arcrobotics.ftclib.command.CommandScheduler;
-import com.arcrobotics.ftclib.gamepad.GamepadEx;
-import com.arcrobotics.ftclib.geometry.Pose2d;
-import com.arcrobotics.ftclib.geometry.Rotation2d;
 
+import org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion;
 import org.firstinspires.ftc.teamcode.Subsystems.Chasis;
 import org.firstinspires.ftc.teamcode.Subsystems.Disparador;
 import org.firstinspires.ftc.teamcode.Subsystems.RecojePelotas;
@@ -31,73 +31,59 @@ import org.firstinspires.ftc.teamcode.Commands.AccionDisparador;
 
 import java.sql.Driver;
 
-
-public class MainSystem {
+@TeleOp(name = "TeleOp")
+public class MainSystem extends LinearOpMode{
 
     double DisparadorPower;
     double RecojePelotasPower;
 
+    
+    public void runOpMode() {
 
-    @TeleOp
-    public class MainSystem extends LinearOpMode { }
-        @Override
-        public void runOpMode() {
-            CommandScheduler.getInstance().reset();
+        //Declaracion del subsistema
 
-            //Declaracion del subsistema
+        ElapsedTime runtime = new ElapsedTime();
+        Chasis chasis = new Chasis(new HardwareMap());
+        RecojePelotas recojePelotas = new RecojePelotas(new HardwareMap());
+        Disparador disparador = new Disparador(new HardwareMap());
 
-            Chasis Chasis = new Chasis(new HardwareMap());
-            RecojePelotas recojePelotas = new RecojePelotas(new HardwareMap());
-            Disparador disparador = new Disparador(new HardwareMap());
+        //Gamepad Declaration
 
-            //Gamepad Declaration
+        Gamepad driver = new Gamepad();
+        Gamepad operator = new Gamepad();
 
-            Gamepad driver = new Gamepad(gamepad1);
-            Gamepad operator = new Gamepad(gamepad2);
 
             /*COMMAND DECLARATION*/
             //CHASIS
 
-            Chasis.setDefaultCommand(new Driver(Chasis, gamepad1));
+            Chasis(new driver(chasis,gamepad1));
 
             // Disparador
+            AccionDisparador(new operator(disparador, gamepad1));
 
             if (gamepad1.right_bumper) {
-                DisparadorPower = 1.0;}
-
-            else if (gamepad1.left_bumper){
-                DisparadorPower = 0.0;}
-
+                DisparadorPower = 1.0;
+            } else if (gamepad1.left_bumper) {
+                DisparadorPower = 0.0;
+            }
 
             //Recoje Pelotas
+            AccionDisparador(new operator(recojePelotas, gamepad1));
 
             if (gamepad1.a) {
-                RecojePelotasPower = 1.0;}
-            else if (gamepad1.b) {
-                RecojePelotasPower = 0.0;}
-
-
-
-            waitForStart();
-            chasis.reset(new Pose2d(0,0, Rotation2d.fromDegrees(0)));
-            while (opModeIsActive()) {
-                CommandScheduler.getInstance().run();
-                Pose2d pose = chasis.getPose();
-
-                // -- ODOMETRY TELEMETRY -- //
-
-                telemetry.addData("X", pose.getX()); //This will display the telemetry on the DriverHub
-                telemetry.addData("Y", pose.getY());
-                telemetry.addData("Heading", pose.getRotation().getDegrees());
-                telemetry.addData("RightDistance", chasis.rightDistance());
-                telemetry.addData("LeftDistance", chasis.leftDistance());
-                telemetry.addLine("---- MEASUREMENTS ---");
-
-
-                telemetry.addData(" LIMIT SWITCH PRESSED", arm.isLimitReached());
-
-                // -- UPDATE TELEMETRY -- //
-                telemetry.update();
+                RecojePelotasPower = 1.0;
+            } else if (gamepad1.b) {
+                RecojePelotasPower = 0.0;
             }
+
+            // -- ODOMETRY TELEMETRY -- //
+
+            // Show the elapsed game time and wheel power.
+            telemetry.addData("Status", "Run Time: " + runtime.toString());
+            telemetry.addData("Motors", "left (%1.0f), right (%1.0f), Up (%1.0f) ,delmedio (%1.0f)", DisparadorPower, RecojePelotasPower);
+            telemetry.addLine("status inicializado");
+            telemetry.addData("Poder motor", "upDrive.getPower(), delmedio.getPower()");
+            // -- UPDATE TELEMETRY -- //
+            telemetry.update();
         }
-}
+    }

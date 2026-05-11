@@ -12,9 +12,10 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
+import org.firstinspires.ftc.teamcode.MainSystem;
 import org.firstinspires.ftc.teamcode.Subsystems.Disparador;
 
-public class Disparador extends Subsystems {
+public class Disparador extends MainSystem {
 
     private DcMotor Disparador; //Este va conectado en el PIN 2
 
